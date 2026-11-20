@@ -1,4 +1,85 @@
 {
-  "last_run": null,
-  "listings": {}
+  "last_run": "2026-11-20T00:46:10.142Z",
+  "listings": {
+    "692542": {
+      "status": "gone",
+      "price": null,
+      "currency": null,
+      "history": [
+        {
+          "date": "2026-11-19",
+          "price": null,
+          "currency": null,
+          "status": "gone",
+          "note": "page loaded but no price shown"
+        }
+      ],
+      "error_count": 0,
+      "name": "Soren's house",
+      "last_checked": "2026-11-20T00:46:10.142Z",
+      "last_error": "page loaded but no price shown",
+      "last_change": "2026-11-20T00:46:10.142Z",
+      "last_change_text": "Sold or removed?"
+    },
+    "692545": {
+      "status": "gone",
+      "price": null,
+      "currency": null,
+      "history": [
+        {
+          "date": "2026-11-19",
+          "price": null,
+          "currency": null,
+          "status": "gone",
+          "note": "page loaded but no price shown"
+        }
+      ],
+      "error_count": 0,
+      "name": "Front Row Workshop",
+      "last_checked": "2026-11-20T00:46:10.142Z",
+      "last_error": "page loaded but no price shown",
+      "last_change": "2026-11-20T00:46:10.142Z",
+      "last_change_text": "Sold or removed?"
+    },
+    "692549": {
+      "status": "gone",
+      "price": null,
+      "currency": null,
+      "history": [
+        {
+          "date": "2026-11-19",
+          "price": null,
+          "currency": null,
+          "status": "gone",
+          "note": "page loaded but no price shown"
+        }
+      ],
+      "error_count": 0,
+      "name": "SLW shop",
+      "last_checked": "2026-11-20T00:46:10.142Z",
+      "last_error": "page loaded but no price shown",
+      "last_change": "2026-11-20T00:46:10.142Z",
+      "last_change_text": "Sold or removed?"
+    },
+    "692665": {
+      "status": "gone",
+      "price": null,
+      "currency": null,
+      "history": [
+        {
+          "date": "2026-11-19",
+          "price": null,
+          "currency": null,
+          "status": "gone",
+          "note": "page loaded but no price shown"
+        }
+      ],
+      "error_count": 0,
+      "name": "SLW/FR workshop",
+      "last_checked": "2026-11-20T00:46:10.142Z",
+      "last_error": "page loaded but no price shown",
+      "last_change": "2026-11-20T00:46:10.142Z",
+      "last_change_text": "Sold or removed?"
+    }
+  }
 }
