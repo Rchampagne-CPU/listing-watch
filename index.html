@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Listings">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0d4f5c">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Listing Watch</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light dark;
+--bg:light-dark(#f8f5ef,#111c1f);--card:light-dark(#ffffff,#18262a);
+--ink:light-dark(#10282d,#e8efee);--mute:light-dark(#5b6d70,#9db0b2);--line:light-dark(#e3ddd2,#26373b);
+--teal:#0d4f5c;--teal2:light-dark(#0d4f5c,#5fb7c4);--coral:#e5533d;--up:#b8761a;--ok:#1f8a5b}
+*{box-sizing:border-box;min-width:0;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Figtree,system-ui,sans-serif;overflow-x:clip}
+.top{background:var(--teal);color:#fff;padding:calc(env(safe-area-inset-top) + 18px) 20px 18px}
+.top .row{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px;opacity:.85}
+.top h1{font-size:32px;line-height:1.05;margin:6px 0 4px;font-weight:800}
+.top p{margin:0;font-size:14px;opacity:.85}
+.sum{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.pill{background:#ffffff1f;border-radius:999px;padding:4px 11px;font-size:13px;white-space:nowrap}
+.pill b{font-weight:800}
+.list{padding:14px 14px calc(env(safe-area-inset-bottom) + 96px);display:grid;gap:12px;max-width:620px;margin:0 auto}
+.card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 16px 14px 22px;cursor:pointer;text-align:left;color:inherit;font:inherit;width:100%}
+.card::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:6px;border-radius:0 6px 6px 0;background:var(--c,var(--line))}
+button:focus-visible,a:focus-visible,.card:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.card h2{font-size:19px;margin:0;line-height:1.2;font-weight:800}
+.meta{font-size:13px;color:var(--mute)}
+.price{font-size:24px;font-weight:800;margin:8px 0 2px;white-space:nowrap}
+.price small{font-size:13px;font-weight:500;color:var(--mute)}
+.tag{display:inline-block;font-size:13px;font-weight:700;border-radius:8px;padding:2px 8px;white-space:nowrap}
+.t-active{background:#1f8a5b1f;color:var(--ok)}.t-pending{background:var(--line);color:var(--mute)}
+.t-drop{background:#e5533d22;color:var(--coral)}.t-up{background:#b8761a22;color:var(--up)}.t-gone{background:var(--coral);color:#fff}
+.chg{font-size:14px;font-weight:700;margin-top:6px}
+.err{font-size:13px;color:var(--up);margin-top:4px}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--line);padding:12px 14px calc(env(safe-area-inset-bottom) + 12px);display:flex;gap:10px;z-index:2}
+.btn{flex:1;min-height:46px;border-radius:12px;border:0;font:700 15px Figtree,sans-serif;cursor:pointer;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;text-decoration:none;text-align:center}
+.btn.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.sheet{position:fixed;inset:0;background:var(--bg);transform:translateY(100%);transition:transform .3s;z-index:5;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top)}
+.sheet.open{transform:none}
+.sh{padding:14px 18px 6px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.x{min-width:64px;min-height:44px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:700 15px Figtree,system-ui,sans-serif;cursor:pointer}
+.sb{padding:4px 18px calc(env(safe-area-inset-bottom) + 28px);overflow:auto;flex:1;max-width:620px;width:100%;margin:0 auto}
+.hist{list-style:none;padding:0;margin:8px 0 0;border-top:1px solid var(--line)}
+.hist li{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}
+.hist li>span:last-child{font-weight:700;text-align:right;white-space:nowrap}
+.link{display:inline-block;margin-top:16px;color:var(--teal2);font-weight:700;min-height:44px}
+.banner{margin:14px 14px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:14px;max-width:592px}
+@media(min-width:620px){.banner{margin:14px auto 0}}
+.banner button{min-height:40px;border-radius:10px;border:1px solid var(--line);background:none;color:var(--ink);font:700 14px Figtree,system-ui,sans-serif;padding:0 12px;margin-top:8px}
+.empty{text-align:center;color:var(--mute);padding:40px 10px}
+@media (prefers-reduced-motion:reduce){.sheet{transition:none}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="row"><span>Listing Watch</span><span id="checked">Loading…</span></div>
+  <h1>My listings</h1>
+  <p>RE/MAX price and status, checked every day at 7:30 AM</p>
+  <div class="sum" id="sum"></div>
+</header>
+<div id="banner"></div>
+<main class="list" id="list"><p class="empty">Loading…</p></main>
+<div class="bar"><a class="btn alt" id="editBtn" href="#" target="_blank" rel="noopener">Add / rename</a><a class="btn" id="checkBtn" href="#" target="_blank" rel="noopener">Check now</a></div>
+
+<section class="sheet" id="sheet" aria-hidden="true">
+  <div class="sh"><span class="meta" id="shId"></span><button class="x" id="close">Done</button></div>
+  <div class="sb" id="sb"></div>
+</section>
+
+<script>
+{
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const money = (v, cur) => v == null ? "—" : `$${Math.round(Number(v)).toLocaleString("en-US")} <small>${esc(cur || "USD")}</small>`;
+const when = (t) => t ? new Date(t).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: "America/Mazatlan" }) : "never";
+const day = (d) => new Date(d + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+
+// Work out the GitHub repo from the address: https://<owner>.github.io/<repo>/
+const owner = location.hostname.endsWith(".github.io") ? location.hostname.split(".")[0] : "";
+const repo = location.pathname.split("/").filter(Boolean)[0] || "";
+const gh = owner && repo ? `https://github.com/${owner}/${repo}` : "";
+$("editBtn").href = gh ? `${gh}/edit/main/data/listings.json` : "#";
+$("checkBtn").href = gh ? `${gh}/actions/workflows/check-listings.yml` : "#";
+
+let rows = [];
+const recent = (l) => l.last_change && (Date.now() - new Date(l.last_change).getTime()) < 7 * 864e5;
+function tagFor(l) {
+  if (l.status === "gone") return ["t-gone", "Sold or removed?", "var(--coral)"];
+  if (!l.status || l.status === "pending") return ["t-pending", "Not checked yet", "var(--line)"];
+  if (recent(l) && /▼/.test(l.last_change_text || "")) return ["t-drop", "Price drop", "var(--coral)"];
+  if (recent(l) && /▲/.test(l.last_change_text || "")) return ["t-up", "Price up", "var(--up)"];
+  return ["t-active", "Active", "var(--ok)"];
+}
+
+async function load() {
+  try {
+    const bust = "?t=" + Date.now();
+    const [lr, sr] = await Promise.all([fetch("data/listings.json" + bust), fetch("data/state.json" + bust)]);
+    const listings = await lr.json();
+    const state = sr.ok ? await sr.json() : { listings: {} };
+    rows = listings.map((l) => ({ id: l.id, ...(state.listings?.[l.id] || {}), name: l.name }));
+    $("checked").textContent = state.last_run ? "Checked " + when(state.last_run) : "Not checked yet";
+    render(); openFromHash();
+  } catch (e) {
+    $("list").innerHTML = `<p class="empty">Couldn't load your listings. Close and reopen the app to try again.</p>`;
+  }
+}
+
+function render() {
+  const active = rows.filter((l) => l.status === "active").length;
+  const changes = rows.filter(recent).length;
+  $("sum").innerHTML = `<span class="pill"><b>${rows.length}</b> tracked</span><span class="pill"><b>${active}</b> active</span><span class="pill"><b>${changes}</b> ${changes === 1 ? "change" : "changes"} this week</span>`;
+  $("list").innerHTML = rows.length ? rows.map((l, i) => {
+    const [cls, txt, col] = tagFor(l);
+    return `<button class="card" style="--c:${col}" data-i="${i}">
+      <div style="display:flex;justify-content:space-between;gap:8px;align-items:start"><h2>${esc(l.name)}</h2><span class="tag ${cls}">${txt}</span></div>
+      <div class="price">${l.status === "gone" ? "—" : money(l.price, l.currency)}</div>
+      <div class="meta">RE/MAX ${esc(l.id)} · ${l.last_checked ? "checked " + when(l.last_checked) : "waiting for first check"}</div>
+      ${recent(l) && l.status !== "gone" ? `<div class="chg" style="color:${col}">${esc(l.last_change_text)}</div>` : ""}
+      ${l.error_count ? `<div class="err">Last check failed: ${esc(l.last_error)}</div>` : ""}
+    </button>`;
+  }).join("") : `<p class="empty">No listings yet. Tap “Add / rename”.</p>`;
+}
+
+function openSheet(i) {
+  const l = rows[i]; if (!l) return;
+  const [cls, txt] = tagFor(l);
+  const hist = (l.history || []).slice().reverse();
+  $("shId").textContent = "RE/MAX " + l.id;
+  $("sb").innerHTML = `<h2 style="font-size:28px;line-height:1.1;margin:0 0 4px">${esc(l.name)}</h2>
+    <div class="meta">${esc(l.title || "Title appears after the first check")}</div>
+    <div class="price" style="font-size:32px">${l.status === "gone" ? "—" : money(l.price, l.currency)}</div>
+    <span class="tag ${cls}">${txt}</span>
+    ${l.status === "gone" && l.price ? `<p class="meta">Last price seen: ${money(l.price, l.currency).replace(/<\/?small>/g, "")}</p>` : ""}
+    <h3 style="margin:22px 0 0;font-size:17px">Price history</h3>
+    ${hist.length ? `<ul class="hist">${hist.map((h) => `<li><span>${day(h.date)}<br><span class="meta">${esc(h.note || "")}</span></span><span>${h.price != null ? money(h.price, h.currency) : "No price shown"}</span></li>`).join("")}</ul>` : `<p class="meta">No checks yet.</p>`}
+    <a class="link" href="https://remax.com.mx/propiedad/${encodeURIComponent(l.id)}" target="_blank" rel="noopener">Open on RE/MAX ↗</a><br>
+    ${gh ? `<a class="link" href="${gh}/edit/main/data/listings.json" target="_blank" rel="noopener">Rename or stop tracking ↗</a>` : ""}`;
+  $("sheet").classList.add("open"); $("sheet").setAttribute("aria-hidden", "false");
+}
+function closeSheet() {
+  $("sheet").classList.remove("open"); $("sheet").setAttribute("aria-hidden", "true");
+  if (location.hash) history.replaceState(null, "", location.pathname);
+}
+function openFromHash() {
+  const m = location.hash.match(/^#l-(\d+)$/); if (!m) return;
+  const i = rows.findIndex((l) => l.id === m[1]); if (i >= 0) openSheet(i);
+}
+$("close").addEventListener("click", closeSheet);
+$("list").addEventListener("click", (e) => { const c = e.target.closest(".card"); if (c) openSheet(+c.dataset.i); });
+window.addEventListener("hashchange", openFromHash);
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") load(); });
+
+// One-time tip about alerts
+let seen = false; try { seen = localStorage.getItem("lw-tip") === "1"; } catch (e) {}
+if (!seen) {
+  $("banner").innerHTML = `<div class="banner">Alerts arrive through the <b>ntfy</b> app on your iPhone, subscribed to your private topic. Tapping one opens this app on that listing.<br><button id="tipOk">Got it</button></div>`;
+  $("tipOk").addEventListener("click", () => { $("banner").innerHTML = ""; try { localStorage.setItem("lw-tip", "1"); } catch (e) {} });
+}
+load();
+}
+</script>
+</body>
+</html>

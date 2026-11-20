@@ -1,0 +1,56 @@
+name: Check listings
+
+on:
+  schedule:
+    # 7:30 AM Cabo San Lucas time = 14:30 UTC (Baja California Sur has no daylight saving).
+    # GitHub sometimes starts scheduled runs a few minutes late.
+    - cron: "30 14 * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run: read the listings and show what was found, but save nothing and send no alerts"
+        type: boolean
+        default: false
+      test_alert:
+        description: "Send a test notification to your phone"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: check-listings
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Check RE/MAX listings
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          APP_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
+          DRY_RUN: ${{ inputs.dry_run && '1' || '' }}
+          TEST_ALERT: ${{ inputs.test_alert && '1' || '' }}
+        run: node scripts/check.mjs
+
+      - name: Save results
+        if: ${{ !inputs.dry_run && !inputs.test_alert }}
+        run: |
+          git config user.name "listing-watch-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/state.json
+          if git diff --cached --quiet; then
+            echo "No changes to save."
+          else
+            git commit -m "Daily listing check $(date -u +%Y-%m-%d)"
+            git push
+          fi
