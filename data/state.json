@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-11-21T15:11:54.091Z",
+  "last_run": "2026-11-22T15:10:10.150Z",
   "listings": {
     "692542": {
       "status": "gone",
@@ -16,7 +16,7 @@
       ],
       "error_count": 0,
       "name": "Soren's house",
-      "last_checked": "2026-11-21T15:11:54.091Z",
+      "last_checked": "2026-11-22T15:10:10.150Z",
       "last_error": "page loaded but no price shown",
       "last_change": "2026-11-20T00:46:10.142Z",
       "last_change_text": "Sold or removed?"
@@ -36,7 +36,7 @@
       ],
       "error_count": 0,
       "name": "Front Row Workshop",
-      "last_checked": "2026-11-21T15:11:54.091Z",
+      "last_checked": "2026-11-22T15:10:10.150Z",
       "last_error": "page loaded but no price shown",
       "last_change": "2026-11-20T00:46:10.142Z",
       "last_change_text": "Sold or removed?"
@@ -56,7 +56,7 @@
       ],
       "error_count": 0,
       "name": "SLW shop",
-      "last_checked": "2026-11-21T15:11:54.091Z",
+      "last_checked": "2026-11-22T15:10:10.150Z",
       "last_error": "page loaded but no price shown",
       "last_change": "2026-11-20T00:46:10.142Z",
       "last_change_text": "Sold or removed?"
@@ -76,7 +76,7 @@
       ],
       "error_count": 0,
       "name": "SLW/FR workshop",
-      "last_checked": "2026-11-21T15:11:54.091Z",
+      "last_checked": "2026-11-22T15:10:10.150Z",
       "last_error": "page loaded but no price shown",
       "last_change": "2026-11-20T00:46:10.142Z",
       "last_change_text": "Sold or removed?"
